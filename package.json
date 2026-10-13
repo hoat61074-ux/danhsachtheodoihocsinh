@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "danhsachtheodoihocsinh",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -20,21 +20,23 @@
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
     "qrcode": "^1.5.4",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "vite": "^5.4.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "@types/qrcode": "^1.5.6",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
     "autoprefixer": "^10.4.21",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.21.5",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
-    "typescript": "^7.0.2",
+    "typescript": "^5.5.4",
     "vite-plugin-pwa": "^2.0.0"
+  }
+}
   }
 }
