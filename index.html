@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BGL Giáo Họ Tân Vạn - Danh Sách Theo Dõi Học Sinh</title>
+    <meta name="description" content="Ứng dụng công khai tra cứu, điểm danh và theo dõi học sinh Ban Giáo Lý Giáo Họ Tân Vạn (Niên khoá 2026 – 2027). Dễ dàng chia sẻ qua liên kết và mã QR cho phụ huynh, giáo lý viên và Ban Điều Hành." />
+    <meta property="og:title" content="BGL Giáo Họ Tân Vạn - Danh Sách Theo Dõi Học Sinh (2026 – 2027)" />
+    <meta property="og:description" content="Ứng dụng công khai tra cứu, điểm danh và theo dõi học sinh Ban Giáo Lý Giáo Họ Tân Vạn (Niên khoá 2026 – 2027). Dễ dàng chia sẻ qua liên kết và mã QR cho phụ huynh, giáo lý viên và Ban Điều Hành." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1d4ed8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="BGL Tân Vạn" />
+    <meta name="application-name" content="BGL Tân Vạn" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png" />
+    <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script>
+      // Bỏ qua lỗi WebSocket HMR của Vite theo hướng dẫn môi trường preview/Cloud Run
+      (function() {
+        var origConsoleError = console.error;
+        console.error = function() {
+          var msg = Array.prototype.slice.call(arguments).map(String).join(' ');
+          if (msg.indexOf('WebSocket') !== -1 && (msg.indexOf('closed without opened') !== -1 || msg.indexOf('@vite/client') !== -1)) {
+            return;
+          }
+          origConsoleError.apply(console, arguments);
+        };
+      })();
+
+      window.__deferredInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.__deferredInstallPrompt = e;
+      });
+
+      // Cơ chế chẩn đoán và tự động reload chống màn hình trắng khi mở từ shortcut máy tính
+      (function() {
+        window.__bglStartupStart = Date.now();
+        window.__bglDiagnostics = [];
+        window.__bglSwLogsCollected = [];
+        window.__bglReactMounted = false;
+
+        function recordLog(level, msg, details) {
+          var time = new Date().toISOString().substring(11, 23);
+          window.__bglDiagnostics.push({ time: time, level: level, msg: msg, details: details || null });
+        }
+
+        window.addEventListener('error', function(event) {
+          var msg = event.message || '';
+          if (msg.indexOf('WebSocket') !== -1 && (msg.indexOf('closed without opened') !== -1 || msg.indexOf('@vite') !== -1)) {
+            event.preventDefault();
+            return;
+          }
+          recordLog('ERROR', 'JavaScript: ' + (event.message || 'Lỗi không xác định'), {
+            filename: event.filename,
+            lineno: event.lineno,
+            colno: event.colno,
+            error: event.error ? event.error.stack : null
+          });
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+          var reasonStr = event.reason ? (event.reason.message || String(event.reason)) : '';
+          if (reasonStr.indexOf('WebSocket') !== -1 && (reasonStr.indexOf('closed without opened') !== -1 || reasonStr.indexOf('@vite') !== -1)) {
+            event.preventDefault();
+            return;
+          }
+          recordLog('ERROR', 'Promise: ' + (event.reason ? (event.reason.message || String(event.reason)) : 'Rejection'), {
+            reason: event.reason && event.reason.stack ? event.reason.stack : String(event.reason)
+          });
+        });
+
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'SW_DIAGNOSTICS_RESPONSE') {
+              if (event.data.logs) window.__bglSwLogsCollected = event.data.logs;
+            }
+          });
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+            var root = document.getElementById('root');
+            var isMounted = window.__bglReactMounted || (root && root.firstElementChild !== null);
+
+            if (!isMounted) {
+              var retryKey = 'bgl_render_retry_count';
+              var retryCount = parseInt(sessionStorage.getItem(retryKey) || '0', 10);
+              recordLog('WARN', 'Watchdog: Chưa phát hiện nội dung render sau 2.8s. Lần thử: ' + retryCount);
+
+              if (retryCount < 2) {
+                console.warn('[BGL Watchdog] Phát hiện màn hình trắng lúc khởi động! Tự động nạp lại trang lần ' + (retryCount + 1) + '...');
+                sessionStorage.setItem(retryKey, String(retryCount + 1));
+                var freshUrl = window.location.origin + window.location.pathname + '?reload=' + Date.now();
+                window.location.replace(freshUrl);
+              } else {
+                console.error('[BGL Watchdog] Đã tự động reload nhưng vẫn chưa hiển thị. Kích hoạt giao diện cứu hộ.');
+                renderEmergencyRecoveryUI();
+              }
+            }
+          }, 2800);
+        });
+
+        function renderEmergencyRecoveryUI() {
+          var root = document.getElementById('root');
+          if (!root || root.firstElementChild) return;
+
+          var isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator && window.navigator.standalone === true);
+          var errorsLog = window.__bglDiagnostics.map(function(d) {
+            return '[' + d.time + '] [' + d.level + '] ' + d.msg;
+          }).join('\n') || '(Không phát hiện lỗi runtime cú pháp)';
+
+          root.innerHTML = `
+            <div style="min-height: 100vh; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; color: #0f172a;">
+              <div style="max-width: 540px; width: 100%; background: #ffffff; border-radius: 20px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.12); border: 1px solid #e2e8f0; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; padding: 22px; text-align: left;">
+                  <div style="display: inline-block; background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; margin-bottom: 8px;">
+                    Chẩn Đoán Khởi Động & Tự Động Phục Hồi
+                  </div>
+                  <h1 style="margin: 0; font-size: 19px; font-weight: 800; line-height: 1.3;">✝️ BGL Giáo Họ Tân Vạn</h1>
+                  <p style="margin: 4px 0 0; font-size: 12px; color: #bfdbfe;">Niên khoá 2026 – 2027 • Tự động khắc phục màn hình trắng</p>
+                </div>
+
+                <div style="padding: 22px;">
+                  <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.5; color: #1e3a8a; margin-bottom: 18px;">
+                    <strong>⚠️ Hệ thống phát hiện màn hình trắng khi mở ứng dụng</strong><br>
+                    ${isStandalone ? '• Nguồn mở: Lối tắt màn hình máy tính (Desktop Shortcut / Standalone)<br>' : '• Nguồn mở: Trình duyệt Web<br>'}
+                    • Trạng thái mạng: ${navigator.onLine ? 'Đang có kết nối mạng Internet' : 'Đang ngoại tuyến (Không có mạng)'}<br>
+                    • Nguyên nhân: Trình duyệt đang giữ bộ nhớ đệm cũ hoặc lối tắt máy tính bị ngắt kết nối nạp script ban đầu.
+                  </div>
+
+                  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
+                    <button onclick="window.location.reload()" style="background: #2563eb; color: #ffffff; border: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;">
+                      🔄 Tải Lại Ứng Dụng Ngay (F5)
+                    </button>
+                    
+                    <button id="btn-clear-cache" onclick="window.__bglEmergencyClearCache()" style="background: #e11d48; color: #ffffff; border: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;">
+                      🧹 Xóa Bộ Nhớ Đệm (Cache) & Mở Mới
+                    </button>
+
+                    <a href="/Ung_Dung_BGL_Tan_Van.html" style="background: #059669; color: #ffffff; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; text-align: center; display: block; box-sizing: border-box;">
+                      📄 Mở File Độc Lập Ngoại Tuyến (.HTML) Không Cần Mạng
+                    </a>
+                  </div>
+
+                  <details style="background: #f1f5f9; border-radius: 10px; padding: 10px; font-size: 11px; color: #334155;">
+                    <summary style="font-weight: 700; cursor: pointer; color: #1e293b;">📋 Xem Nhật Ký Lỗi Khởi Chạy (Diagnostic Logs)</summary>
+                    <pre style="margin: 8px 0 0; padding: 8px; background: #0f172a; color: #38bdf8; border-radius: 6px; overflow-x: auto; font-size: 10px; white-space: pre-wrap;">${errorsLog}</pre>
+                  </details>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        window.__bglEmergencyClearCache = function() {
+          var btn = document.getElementById('btn-clear-cache');
+          if (btn) btn.innerText = 'Đang dọn dẹp bộ nhớ đệm...';
+          
+          var p1 = ('caches' in window) ? caches.keys().then(function(keys) {
+            return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+          }) : Promise.resolve();
+
+          var p2 = ('serviceWorker' in navigator) ? navigator.serviceWorker.getRegistrations().then(function(regs) {
+            return Promise.all(regs.map(function(r) { return r.unregister(); }));
+          }) : Promise.resolve();
+
+          Promise.all([p1, p2]).finally(function() {
+            sessionStorage.clear();
+            var target = window.location.origin + window.location.pathname + '?fresh=' + Date.now();
+            window.location.href = target;
+          });
+        };
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

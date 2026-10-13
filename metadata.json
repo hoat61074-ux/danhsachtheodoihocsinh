@@ -1,0 +1,6 @@
+{
+  "name": "BGL Giáo Họ Tân Vạn - Danh Sách Theo Dõi Học Sinh",
+  "description": "Ứng dụng công khai tra cứu, điểm danh và theo dõi học sinh Ban Giáo Lý Giáo Họ Tân Vạn (Niên khoá 2026 – 2027). Dễ dàng chia sẻ qua liên kết và mã QR cho phụ huynh, giáo lý viên và Ban Điều Hành.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
